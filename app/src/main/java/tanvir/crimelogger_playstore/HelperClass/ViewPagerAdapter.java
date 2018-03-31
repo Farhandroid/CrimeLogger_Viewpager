@@ -3,6 +3,7 @@ package tanvir.crimelogger_playstore.HelperClass;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
@@ -52,5 +53,17 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         tabTitles.remove(0);
         tabTitles.add(0,"Home");
         notifyDataSetChanged();
+    }
+
+    @Override
+    public Object instantiateItem(ViewGroup container, int position) {
+        /*frags[position] = (Fragment) super.instantiateItem(container, position);
+        return frags[position];*/
+
+        Fragment fragment=(Fragment) super.instantiateItem(container, position);
+        fragments.remove(position);
+        fragments.add(position,fragment);
+
+        return fragments.get(position);
     }
 }

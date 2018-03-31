@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.os.Parcelable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -75,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.tolbarlayoutinmainactivity);
         setSupportActionBar(toolbar);
 
+        ///Toast.makeText(this, "MainActivity", Toast.LENGTH_SHORT).show();
+
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
         searchView = findViewById(R.id.search_view);
@@ -144,6 +148,13 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_items, menu);
 
+
+
+
+
+
+
+
         final Boolean[] isItFirchSearch = {true};
        /// isItFirchSearch[0]=true;
 
@@ -156,7 +167,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
 
-                return false;
+                ///Toast.makeText(MainActivity.this, "Submit", Toast.LENGTH_SHORT).show();
+
+                if (query.length()>0)
+                    ((HomeFragment)fragment).onclikckedSearchInMainActivity(query,isItFirchSearch[0]);
+                else
+                    Toast.makeText(MainActivity.this, "Blank", Toast.LENGTH_SHORT).show();
+
+                ///return false;
+                return true;
             }
 
             @Override
@@ -166,11 +185,23 @@ public class MainActivity extends AppCompatActivity {
 
                 if (newText.length()>0)
                 {
+                    /*int i= getResources().getConfiguration().orientation;
+
+                    if (i == Configuration.ORIENTATION_PORTRAIT)
+                        Toast.makeText(MainActivity.this, "Potrait", Toast.LENGTH_SHORT).show();
+                    else
+                        Toast.makeText(MainActivity.this, "Landscape", Toast.LENGTH_SHORT).show();*/
+
 
 
 
                     ///Toast.makeText(MainActivity.this, "MV isItFirchSearch : "+isItFirchSearch[0], Toast.LENGTH_SHORT).show();
 
+
+                    ///Fragment fragment2= viewPagerAdapter.getItem(0);
+
+                   /// if (fragment2 instanceof HomeFragment)
+                        ///Toast.makeText(MainActivity.this, "Home fragment", Toast.LENGTH_SHORT).show();
                     ((HomeFragment)fragment).onclikckedSearchInMainActivity(newText,isItFirchSearch[0]);
 
                     if (isItFirchSearch[0])
@@ -179,11 +210,10 @@ public class MainActivity extends AppCompatActivity {
                         isItFirchSearch[0] =false;
                     }
 
+
+
+
                 }
-
-
-
-
 
 
 
@@ -201,11 +231,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSearchViewClosed() {
 
+
+
                 ((HomeFragment)fragment).onclikckedSearchInMainActivity("SearchViewClosed",isItFirchSearch[0]);
             }
         });
 
         return true;
+        //return false;
     }
 
 

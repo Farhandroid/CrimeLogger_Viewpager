@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,11 +78,20 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         activity = getActivity();
-        /// Toast.makeText(activity, "www", Toast.LENGTH_SHORT).show();
+
+        if (activity==null)
+            Log.d("null6","activity = null in oncreate");
+
+
+
+
+        ///Toast.makeText(activity, "Home", Toast.LENGTH_SHORT).show();
 
         progressBar = view.findViewById(R.id.prgrs);
         nestedScrollView = view.findViewById(R.id.homeFragMentNestedScrollView);
@@ -93,9 +103,23 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
-      
+
         userPostMCS = new ArrayList<>();
+
+        if (userPostMCS==null)
+            Log.d("null5","userPostMCS = nll in oncreate");
+            ///Toast.makeText(activity, "userPostMCS null", Toast.LENGTH_SHORT).show();
+
+
         userPostMCSCopy = new ArrayList<>();
+
+
+        if (userPostMCSCopy==null)
+            Log.d("null4","userPostMCSCopy = nll in oncreate");
+            //Toast.makeText(activity, "userPostMCSCopy null", Toast.LENGTH_SHORT).show();
+
+
+        updateRecyclerView(userPostMCS);
 
 
         hud = KProgressHUD.create(getActivity())
@@ -107,11 +131,14 @@ public class HomeFragment extends Fragment {
 
         if (savedInstanceState != null) {
 
-
+            Log.d("null3","Enter savedInstanceState");
+           /// Toast.makeText(activity, "Enter savedInstanceState", Toast.LENGTH_SHORT).show();
             userPostMCS.clear();
             ArrayList<UserPostMC> data = (ArrayList<UserPostMC>) savedInstanceState.getSerializable("userPostMCsData");
             userPostMCS.addAll(data);
             this.isItFirstDataRetrivation = savedInstanceState.getBoolean("isItFirstDataRetrivation");
+            this.isMaterialSearchViewUsed=savedInstanceState.getBoolean("isMaterialSearchViewUsed");
+            this.searchKey=savedInstanceState.getString("searchKey");
 
             ///Toast.makeText(activity, "size : " + userPostMCS.size(), Toast.LENGTH_SHORT).show();
 
@@ -121,8 +148,12 @@ public class HomeFragment extends Fragment {
 
 
         } else if (isMaterialSearchViewUsed == false) {
+
+            ///Toast.makeText(activity, "Enter else if", Toast.LENGTH_SHORT).show();
             retriveDataFromServer();
         }
+        else
+            Toast.makeText(activity, "Enter", Toast.LENGTH_SHORT).show();
 
 
         return view;
@@ -137,7 +168,7 @@ public class HomeFragment extends Fragment {
 
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-        recyclerView.invalidate();
+
 
         nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
@@ -156,7 +187,12 @@ public class HomeFragment extends Fragment {
                     }
 
                     if (!isLoading && (totalItemCount - visibleItemCount) <= (pastVisibleItem + viewThreshold)) {
-                        retriveDataFromServer();
+
+                        if (isMaterialSearchViewUsed==false)
+                            retriveDataFromServer();
+                        else
+                            retiveDataByPlaceFromDatabase();
+
                         isLoading = true;
                     }
 
@@ -170,6 +206,7 @@ public class HomeFragment extends Fragment {
 
     public void retriveDataFromServer() {
 
+        isMaterialSearchViewUsed=false;
 
         String p = "";
         if (isItFirstDataRetrivation) {
@@ -287,12 +324,14 @@ public class HomeFragment extends Fragment {
 
     }
 
-    @Override
+   @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("restoreArrayListPosition", layoutManager.findFirstVisibleItemPosition());
         outState.putSerializable("userPostMCsData", userPostMCS);
         outState.putBoolean("isItFirstDataRetrivation", isItFirstDataRetrivation);
+       outState.putBoolean("isMaterialSearchViewUsed", isMaterialSearchViewUsed);
+       outState.putString("searchKey",searchKey);
 
     }
 
@@ -329,6 +368,8 @@ public class HomeFragment extends Fragment {
 
     public void retiveDataByPlaceFromDatabase() {
 
+        isMaterialSearchViewUsed=true;
+
         ///Toast.makeText(activity, "Enter search", Toast.LENGTH_SHORT).show();
         String p = "";
         if (isItFirstDataRetrivation) {
@@ -356,7 +397,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(String response) {
 
-                /// Toast.makeText(activity, "rspnse : " + response.length(), Toast.LENGTH_SHORT).show();
+                ///Toast.makeText(activity, "rspnse : " + response.length(), Toast.LENGTH_SHORT).show();
 
 
                 JSONArray jsonArray = null;
@@ -483,7 +524,23 @@ public class HomeFragment extends Fragment {
 
     public void onclikckedSearchInMainActivity(String searchKey, Boolean isItFirchSearch) {
 
-        ///Toast.makeText(activity, "isItFirchSearch : "+isItFirchSearch, Toast.LENGTH_SHORT).show();
+      /// Toast.makeText(activity, "isItFirchSearch : "+isItFirchSearch, Toast.LENGTH_SHORT).show();
+
+
+        if (userPostMCS==null)
+        {
+            Log.d("null1", "userPostMCS==null");
+
+            if (activity==null)
+                Log.d("null2", "activity==null");
+
+        }
+            ///Toast.makeText(activity, "userPostMCS null in click", Toast.LENGTH_SHORT).show();
+
+
+        if (userPostMCSCopy==null)
+            Log.d("null8", "userPostMCSCopy==null");
+            //Toast.makeText(activity, "userPostMCSCopy null in click", Toast.LENGTH_SHORT).show();
 
 
 
@@ -504,7 +561,11 @@ public class HomeFragment extends Fragment {
             userPostMCS.addAll(userPostMCSCopy);
             adapter.notifyDataSetChanged();
 
+            isMaterialSearchViewUsed=false;
+
         } else {
+
+            ///Toast.makeText(activity, "Enter else in retiveDataByPlaceFromDatabase ", Toast.LENGTH_SHORT).show();
 
 
             isMaterialSearchViewUsed = true;
