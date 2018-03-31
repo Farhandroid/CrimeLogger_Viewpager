@@ -1,0 +1,70 @@
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/homeFragMentNestedScrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/activityBackground"
+    android:fillViewport="true"
+    android:orientation="vertical"
+    tools:context="tanvir.crimelogger_playstore.Fragment.HomeFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/fullScreenProgressBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:id="@+id/fullScreenProgressBar"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:theme="@style/AppTheme2" />
+
+
+            <TextView
+                android:id="@+id/progressBarinsideText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/fullScreenProgressBar"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:text="@string/loading_data"
+                android:textColor="@color/black"
+                android:textSize="22sp" />
+        </RelativeLayout>
+
+
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false">
+
+        </android.support.v7.widget.RecyclerView>
+
+
+        <ProgressBar
+            android:visibility="gone"
+            android:id="@+id/prgrs"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@id/recyclerView"
+            android:layout_centerHorizontal="true"
+            android:theme="@style/AppTheme2" />
+    </RelativeLayout>
+
+
+</android.support.v4.widget.NestedScrollView>

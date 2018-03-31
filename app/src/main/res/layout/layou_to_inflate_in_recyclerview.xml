@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="0dp"
+    android:focusableInTouchMode="false"
+    android:focusable="false"
+    android:focusedByDefault="false"
+    android:orientation="vertical"
+    >
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardViewRV"
+        android:layout_width="match_parent"
+        android:layout_height="165dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="14dp"
+        android:elevation="5dp"
+        app:cardCornerRadius="5dp">
+
+        <LinearLayout
+            android:focusableInTouchMode="false"
+            android:focusable="false"
+            android:focusedByDefault="false"
+            android:id="@+id/recylerViewLL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="118dp"
+                android:layout_height="165dp"
+                android:background="@color/colorPrimaryDarker"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/crimeDateTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="serif"
+                    android:gravity="center"
+                    android:text="25/11/2017"
+                    android:textColor="#FFFFFF"
+                    android:textSize="21sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/crimeTimeTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:text="19:30"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/crimePlaceTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:text="Rampura,dhaka"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/crimeTypeTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:text="Harresment, Rape, Sex,"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12sp"
+                    android:textStyle="normal"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="9dp"
+                android:paddingRight="2dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/crimeDescTV"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="115dp"
+                    android:maxLines="6"
+                    android:text="Iwas going vvb\nggfdg\fg\fgffg\nkgodkjf djkv xdj vlcd jlkgl dfgjd fksljg ksdf
+gdflk gdlsfg kldg dkgjfdsklg gjjfdslgnsfd
+ fgl..."
+                    android:textColor="#000000"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+
+                        android:layout_marginTop="6dp"
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:src="@drawable/date"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"/>
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/postDateTV"
+                                android:layout_marginLeft="4dp"
+                                android:layout_marginTop="0dp"
+                                android:textSize="10sp"
+                                android:text="25/12/2019"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:id="@+id/postTimeTV"
+                                android:layout_marginLeft="4dp"
+                                android:layout_marginTop="0dp"
+                                android:textSize="10sp"
+                                android:text="21:12 "
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/imageViewInRecyclerView"
+                            android:layout_marginTop="1dp"
+                            android:src="@drawable/person2"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp" />
+
+                        <TextView
+                            android:id="@+id/postedByTV"
+                            android:layout_marginLeft="3dp"
+                            android:layout_marginTop="0dp"
+                            android:textSize="10sp"
+                            android:layout_gravity="center"
+                            android:text="anonymouskjhjhgfhf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+
+
+</LinearLayout>
