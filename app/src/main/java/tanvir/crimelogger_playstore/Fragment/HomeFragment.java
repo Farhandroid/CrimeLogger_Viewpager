@@ -68,6 +68,7 @@ public class HomeFragment extends Fragment {
     boolean isMaterialSearchViewUsed = false;
 
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,6 +137,7 @@ public class HomeFragment extends Fragment {
             userPostMCS.clear();
             ArrayList<UserPostMC> data = (ArrayList<UserPostMC>) savedInstanceState.getSerializable("userPostMCsData");
             userPostMCS.addAll(data);
+            this.userPostMCSCopy.addAll(userPostMCS);
             this.isItFirstDataRetrivation = savedInstanceState.getBoolean("isItFirstDataRetrivation");
             this.isMaterialSearchViewUsed=savedInstanceState.getBoolean("isMaterialSearchViewUsed");
             this.searchKey=savedInstanceState.getString("searchKey");
@@ -152,8 +154,7 @@ public class HomeFragment extends Fragment {
             ///Toast.makeText(activity, "Enter else if", Toast.LENGTH_SHORT).show();
             retriveDataFromServer();
         }
-        else
-            Toast.makeText(activity, "Enter", Toast.LENGTH_SHORT).show();
+
 
 
         return view;
@@ -330,48 +331,19 @@ public class HomeFragment extends Fragment {
         outState.putInt("restoreArrayListPosition", layoutManager.findFirstVisibleItemPosition());
         outState.putSerializable("userPostMCsData", userPostMCS);
         outState.putBoolean("isItFirstDataRetrivation", isItFirstDataRetrivation);
-       outState.putBoolean("isMaterialSearchViewUsed", isMaterialSearchViewUsed);
-       outState.putString("searchKey",searchKey);
+        outState.putBoolean("isMaterialSearchViewUsed", isMaterialSearchViewUsed);
+        outState.putString("searchKey",searchKey);
 
     }
 
-    /*@Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null) {
-            // Restore last state for checked position.
-
-            ///String s = savedInstanceState.getString("tst");
-            ///Toast.makeText(activity, "tst : "+s, Toast.LENGTH_SHORT).show();
-
-            userPostMCS.clear();
-            ArrayList<UserPostMC> data = (ArrayList<UserPostMC>) savedInstanceState.getSerializable("userPostMCsData");
-            userPostMCS.addAll(data);
-
-            Toast.makeText(activity, "size : " + userPostMCS.size(), Toast.LENGTH_SHORT).show();
-
-
-           /* userPostMCS.clear();
-            ArrayList<UserPostMC> data = (ArrayList<UserPostMC>) savedInstanceState.getSerializable("userPostMCsData");
-            userPostMCS.addAll(data);
-
-            updateRecyclerView(userPostMCS);
-            recyclerView.scrollToPosition(savedInstanceState.getInt("restoreArrayListPosition"));*/
-
-
-    /// Toast.makeText(this, "pstn : "+pos, Toast.LENGTH_SHORT).show();
-
-
-    //}
-    //}
 
 
     public void retiveDataByPlaceFromDatabase() {
 
         isMaterialSearchViewUsed=true;
 
-        ///Toast.makeText(activity, "Enter search", Toast.LENGTH_SHORT).show();
-        String p = "";
+        String p;
+
         if (isItFirstDataRetrivation) {
             isItFirstDataRetrivation = false;
             ///hud.show();
@@ -397,7 +369,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(String response) {
 
-                ///Toast.makeText(activity, "rspnse : " + response.length(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "rspnse : " + response.length(), Toast.LENGTH_LONG).show();
+                Log.d("rspnse ",response);
 
 
                 JSONArray jsonArray = null;
@@ -522,29 +495,11 @@ public class HomeFragment extends Fragment {
         Toast.makeText(activity, "onDestroyView", Toast.LENGTH_SHORT).show();
     }*/
 
-    public void onclikckedSearchInMainActivity(String searchKey, Boolean isItFirchSearch) {
-
-      /// Toast.makeText(activity, "isItFirchSearch : "+isItFirchSearch, Toast.LENGTH_SHORT).show();
-
-
-        if (userPostMCS==null)
-        {
-            Log.d("null1", "userPostMCS==null");
-
-            if (activity==null)
-                Log.d("null2", "activity==null");
-
-        }
-            ///Toast.makeText(activity, "userPostMCS null in click", Toast.LENGTH_SHORT).show();
-
-
-        if (userPostMCSCopy==null)
-            Log.d("null8", "userPostMCSCopy==null");
-            //Toast.makeText(activity, "userPostMCSCopy null in click", Toast.LENGTH_SHORT).show();
+    public void onclikckedSearchInMainActivity(String searchKey, Boolean isItFirstSearch) {
 
 
 
-        if (isItFirchSearch) {
+        if (isItFirstSearch) {
 
             userPostMCSCopy.addAll(userPostMCS);
 
@@ -565,12 +520,10 @@ public class HomeFragment extends Fragment {
 
         } else {
 
-            ///Toast.makeText(activity, "Enter else in retiveDataByPlaceFromDatabase ", Toast.LENGTH_SHORT).show();
 
 
             isMaterialSearchViewUsed = true;
             isItFirstDataRetrivation = true;
-            ///Toast.makeText(activity, "Searchkey " + searchKey, Toast.LENGTH_SHORT).show();
             this.searchKey = searchKey;
 
 
@@ -579,4 +532,6 @@ public class HomeFragment extends Fragment {
 
 
     }
+
+
 }

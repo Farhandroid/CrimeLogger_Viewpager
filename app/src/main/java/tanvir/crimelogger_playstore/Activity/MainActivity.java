@@ -3,6 +3,7 @@ package tanvir.crimelogger_playstore.Activity;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -22,6 +23,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -29,6 +31,12 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.kaopiz.kprogresshud.KProgressHUD;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
@@ -53,6 +61,9 @@ public class MainActivity extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager viewPager;
     ViewPagerAdapter viewPagerAdapter;
+    int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
+    boolean isalreadyClickedOnShowGooglePlaceAutocomplete=false;
+    KProgressHUD hud;
 
     ///OnTest onTest;
 
@@ -81,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
-        searchView = findViewById(R.id.search_view);
+
 
         checkPermissions();
 
@@ -94,7 +105,6 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(viewPagerAdapter);
 
         tabLayout.setupWithViewPager(viewPager);
-
 
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -127,6 +137,12 @@ public class MainActivity extends AppCompatActivity {
 
 
         });
+
+        hud = KProgressHUD.create(MainActivity.this)
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setDimAmount(0.6f)
+                .setLabel("Please Wait")
+                .setCancellable(false);
     }
 
     private boolean checkPermissions() {
@@ -145,18 +161,12 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public boolean onCreateOptionsMenu(Menu menu) {
+    /*public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_items, menu);
 
 
-
-
-
-
-
-
         final Boolean[] isItFirchSearch = {true};
-       /// isItFirchSearch[0]=true;
+        /// isItFirchSearch[0]=true;
 
         MenuItem item = menu.findItem(R.id.action_search);
         searchView.setMenuItem(item);
@@ -169,8 +179,8 @@ public class MainActivity extends AppCompatActivity {
 
                 ///Toast.makeText(MainActivity.this, "Submit", Toast.LENGTH_SHORT).show();
 
-                if (query.length()>0)
-                    ((HomeFragment)fragment).onclikckedSearchInMainActivity(query,isItFirchSearch[0]);
+                if (query.length() > 0)
+                    ((HomeFragment) fragment).onclikckedSearchInMainActivity(query, isItFirchSearch[0]);
                 else
                     Toast.makeText(MainActivity.this, "Blank", Toast.LENGTH_SHORT).show();
 
@@ -180,11 +190,10 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-;
+                ;
 
 
-                if (newText.length()>0)
-                {
+                if (newText.length() > 0) {
                     /*int i= getResources().getConfiguration().orientation;
 
                     if (i == Configuration.ORIENTATION_PORTRAIT)
@@ -193,28 +202,22 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "Landscape", Toast.LENGTH_SHORT).show();*/
 
 
-
-
                     ///Toast.makeText(MainActivity.this, "MV isItFirchSearch : "+isItFirchSearch[0], Toast.LENGTH_SHORT).show();
 
 
                     ///Fragment fragment2= viewPagerAdapter.getItem(0);
 
-                   /// if (fragment2 instanceof HomeFragment)
-                        ///Toast.makeText(MainActivity.this, "Home fragment", Toast.LENGTH_SHORT).show();
-                    ((HomeFragment)fragment).onclikckedSearchInMainActivity(newText,isItFirchSearch[0]);
+                    /// if (fragment2 instanceof HomeFragment)
+                    ///Toast.makeText(MainActivity.this, "Home fragment", Toast.LENGTH_SHORT).show();
+                    /*((HomeFragment) fragment).onclikckedSearchInMainActivity(newText, isItFirchSearch[0]);
 
-                    if (isItFirchSearch[0])
-                    {
+                    if (isItFirchSearch[0]) {
                         ///Toast.makeText(MainActivity.this, "enter", Toast.LENGTH_SHORT).show();
-                        isItFirchSearch[0] =false;
+                        isItFirchSearch[0] = false;
                     }
 
 
-
-
                 }
-
 
 
                 return false;
@@ -232,15 +235,77 @@ public class MainActivity extends AppCompatActivity {
             public void onSearchViewClosed() {
 
 
-
-                ((HomeFragment)fragment).onclikckedSearchInMainActivity("SearchViewClosed",isItFirchSearch[0]);
+                ((HomeFragment) fragment).onclikckedSearchInMainActivity("SearchViewClosed", isItFirchSearch[0]);
             }
         });
 
         return true;
         //return false;
+    }*/
+
+
+    public void showPlaceAutoComplete(View view) {
+
+
+        if (isalreadyClickedOnShowGooglePlaceAutocomplete==false)
+        {
+            hud.show();
+            isalreadyClickedOnShowGooglePlaceAutocomplete=true;
+
+            AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
+                    .setCountry("BD")
+                    .build();
+
+            try {
+                Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN).setFilter(typeFilter).build(this);
+
+                startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+            } catch (GooglePlayServicesRepairableException e) {
+                // TODO: Handle the error.
+            } catch (GooglePlayServicesNotAvailableException e) {
+                // TODO: Handle the error.
+            }
+        }
+
+
+
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        hud.dismiss();
+
+        isalreadyClickedOnShowGooglePlaceAutocomplete=false;
+
+        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlaceAutocomplete.getPlace(this, data);
+
+                final Boolean[] isItFirchSearch = {true};
+                final Fragment fragment = viewPagerAdapter.getItem(0);
+
+                String placeName = (String) place.getName();
+
+                 ((HomeFragment) fragment).onclikckedSearchInMainActivity(placeName, isItFirchSearch[0]);
+
+                    if (isItFirchSearch[0]) {
+
+                        isItFirchSearch[0] = false;
+                    }
+
+
+                Toast.makeText(this, "name : "+place.getName()+"expense : "+place.getPriceLevel(), Toast.LENGTH_SHORT).show();
+
+            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
+                Status status = PlaceAutocomplete.getStatus(this, data);
+                // TODO: Handle the error.
+                ////Log.i(TAG, status.getStatusMessage());
+
+            } else if (resultCode == RESULT_CANCELED) {
+                // The user canceled the operation.
+            }
+        }
+    }
 
 
 }

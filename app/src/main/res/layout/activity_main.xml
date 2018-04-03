@@ -21,15 +21,10 @@
             <include
 
                 android:id="@+id/tolbarlayoutinmainactivity"
-                layout="@layout/toolbar_layout"
+                layout="@layout/toolbar_layout_main_activity"
                 app:layout_collapseMode="parallax" />
 
-            <com.miguelcatalan.materialsearchview.MaterialSearchView
-                android:id="@+id/search_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="0dp"
-                app:layout_collapseMode="parallax" />
+
 
 
         </android.support.design.widget.CollapsingToolbarLayout>
