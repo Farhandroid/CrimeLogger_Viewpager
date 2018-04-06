@@ -1,0 +1,158 @@
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/activityBackground"
+    android:fillViewport="true"
+    tools:context="tanvir.crimelogger_playstore.Fragment.PlaceInfoFragment">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/activityBackground"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical"
+            android:padding="5dp"
+            tools:context="tanvir.crimelogger_aust.Activity.ShowStatistics">
+
+
+            <RelativeLayout
+                android:visibility="gone"
+                android:id="@+id/searchRelativeLayout"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/img"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/empty_search"
+                    android:layout_width="250dp"
+                    android:layout_height="250dp" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:visibility="gone"
+                android:id="@+id/fullScreenProgressBarLayoutInPlaceInfoFragment"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ProgressBar
+                    android:id="@+id/fullScreenProgressBarInPlaceInfoFragment"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:theme="@style/AppTheme2" />
+
+
+                <TextView
+                    android:id="@+id/progressBarinsideText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@id/fullScreenProgressBarInPlaceInfoFragment"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:text="@string/loading_data"
+                    android:textColor="@color/black"
+                    android:textSize="22sp" />
+
+
+            </RelativeLayout>
+
+
+
+            <LinearLayout
+                android:layout_margin="2dp"
+                android:padding="2dp"
+                android:background="#90A4AE"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/placeTV"
+                    android:layout_marginTop="5dp"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:layout_gravity="center"
+                    android:text="Badda"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+
+                    android:layout_marginTop="3dp"
+                    android:id="@+id/sortedMonth"
+                    android:clickable="true"
+                    android:onClick="initializeateAndMonthPicker"
+                    android:textSize="18sp"
+                    android:textColor="@color/Red"
+                    android:layout_gravity="center"
+                    android:text="Select month"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:ignore="OnClick" />
+
+
+            </LinearLayout>
+
+            <RelativeLayout
+
+                android:background="@color/white"
+                android:visibility="gone"
+                android:id="@+id/emptyRelativeLayoutForShowStatistics"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_marginTop="70dp"
+                    android:id="@+id/empty_post"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/empty_crop"
+                    android:layout_width="250dp"
+                    android:layout_height="250dp" />
+
+                <TextView
+                    android:textSize="25sp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/empty_post"
+                    android:text="No Data found"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+
+
+            </RelativeLayout>
+
+
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pieChart"
+                android:padding="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </com.github.mikephil.charting.charts.PieChart>
+
+        </LinearLayout>
+
+
+
+
+    </FrameLayout>
+
+
+</android.support.v4.widget.NestedScrollView>

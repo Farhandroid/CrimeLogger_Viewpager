@@ -1,4 +1,4 @@
-package tanvir.crimelogger_playstore.HelperClass;
+package tanvir.crimelogger_playstore.HelperClass.Adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

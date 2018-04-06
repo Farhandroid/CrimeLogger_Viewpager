@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="@color/colorPrimary"
+    app:theme="@style/ThemeOverlay.AppCompat.Dark"
+    android:id="@+id/toolBar"
+    app:layout_scrollFlags="scroll|enterAlways">
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="PlaceInfo"
+            android:textSize="20dp"
+            android:textColor="#FFFFFF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:clickable="true"
+            android:onClick="showPlaceAutoComplete"
+           android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+
+            android:src="@drawable/search"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+
+
+    </RelativeLayout>
+
+
+
+</android.support.v7.widget.Toolbar>

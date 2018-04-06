@@ -1,14 +1,9 @@
 package tanvir.crimelogger_playstore.Fragment;
 
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,7 +19,6 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.kaopiz.kprogresshud.KProgressHUD;
 
@@ -34,9 +28,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import tanvir.crimelogger_playstore.Activity.MainActivity;
 import tanvir.crimelogger_playstore.HelperClass.MySingleton;
-import tanvir.crimelogger_playstore.HelperClass.RecyclerAdapter;
+import tanvir.crimelogger_playstore.HelperClass.Adapter.RecyclerAdapter;
 import tanvir.crimelogger_playstore.ModelClass.UserPostMC;
 import tanvir.crimelogger_playstore.R;
 
@@ -228,7 +221,7 @@ public class HomeFragment extends Fragment {
         }
 
 
-        String url = "http://www.farhandroid.com/CrimeLogger/Script/retriveUserPostFromDatabaseWithLimit.php?position=" + p;
+        String url = "http://www.farhandroid.com/CrimeLogger/Script/retriveUserPostFromDatabaseWithLimit.php?position="+p;
 
 
         StringRequest stringRequest = new StringRequest(
@@ -362,7 +355,7 @@ public class HomeFragment extends Fragment {
         }
 
 
-        String url = "http://www.farhandroid.com/CrimeLogger/Script/retrieveSearchByPlaceData.php?placeName=" + searchKey + "&position=" + p;
+        String url = "http://www.farhandroid.com/CrimeLogger/Script/retrieveSearchByPlaceData.php?placeName=" + searchKey.replaceAll(" ","%20") + "&position=" + p+ "&allData=no";
 
         StringRequest stringRequest = new StringRequest(
                 Request.Method.GET, url, new Response.Listener<String>() {
