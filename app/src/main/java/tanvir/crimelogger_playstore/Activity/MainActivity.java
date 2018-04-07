@@ -3,14 +3,18 @@ package tanvir.crimelogger_playstore.Activity;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
 
@@ -35,6 +39,11 @@ public class MainActivity extends AppCompatActivity {
 
     private Toolbar mainActivityToolBar;
     private Toolbar placeInfoToolBar;
+    private Toolbar placeInfoToolBarWithPlaceName;
+
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
+    ActionBarDrawerToggle actionBarDrawerToggle;
 
 
     TabLayout tabLayout;
@@ -68,6 +77,10 @@ public class MainActivity extends AppCompatActivity {
         mainActivityToolBar = findViewById(R.id.toolbarLayoutInMainActivity);
         placeInfoToolBar = findViewById(R.id.toolbarLayoutInPlaceInfoFragment);
         setSupportActionBar(mainActivityToolBar);
+        drawerLayout = findViewById(R.id.drawerLayout);
+        navigationView = findViewById(R.id.navigationView);
+
+        changeNavigationDrawer("home");
 
         ///Toast.makeText(this, "MainActivity", Toast.LENGTH_SHORT).show();
 
@@ -101,11 +114,13 @@ public class MainActivity extends AppCompatActivity {
 
 
                 if (position == 1) {
+                    changeNavigationDrawer("placeInfo");
                     placeInfoToolBar.setVisibility(View.VISIBLE);
                     mainActivityToolBar.setVisibility(View.GONE);
                     isUserInPlaceInfoFragment = true;
                     ///Toast.makeText(MainActivity.this, "Safe", Toast.LENGTH_SHORT).show();
                 } else {
+                    changeNavigationDrawer("home");
                     isUserInPlaceInfoFragment = false;
                     placeInfoToolBar.setVisibility(View.GONE);
                     mainActivityToolBar.setVisibility(View.VISIBLE);
@@ -129,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
                 .setLabel("Please Wait")
                 .setCancellable(false);
     }
+
 
     private boolean checkPermissions() {
         int result;
@@ -216,6 +232,34 @@ public class MainActivity extends AppCompatActivity {
                 // The user canceled the operation.
             }
         }
+
+
+    }
+
+    @Override
+    public void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        actionBarDrawerToggle.syncState();
+    }
+
+    public void changeNavigationDrawer(String fragmentName) {
+        actionBarDrawerToggle = null;
+
+        if (fragmentName.contains("home"))
+            actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, mainActivityToolBar, R.string.drawer_open
+                    , R.string.drawer_close);
+        else if (fragmentName.contains("placeInfo"))
+            actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, placeInfoToolBar, R.string.drawer_open
+                    , R.string.drawer_close);
+        else if (fragmentName.contains("placeInfoWithPlaceName"))
+            actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, placeInfoToolBarWithPlaceName, R.string.drawer_open
+                    , R.string.drawer_close);
+
+        drawerLayout.setDrawerListener(actionBarDrawerToggle);
+
+        Menu nav_Menu = navigationView.getMenu();
+        nav_Menu.findItem(R.id.HOmeId).setChecked(true);
+        actionBarDrawerToggle.syncState();
     }
 
 

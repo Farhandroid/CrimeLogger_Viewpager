@@ -5,10 +5,12 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +20,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.borax12.materialdaterangepicker.date.DatePickerDialog;
+import com.borax12.materialdaterangepicker.time.RadialPickerLayout;
+import com.borax12.materialdaterangepicker.time.TimePickerDialog;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
@@ -27,9 +32,10 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
-import java.security.PrivateKey;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import tanvir.crimelogger_playstore.HelperClass.MySingleton;
 import tanvir.crimelogger_playstore.ModelClass.PieChartDataMC;
@@ -37,7 +43,7 @@ import tanvir.crimelogger_playstore.ModelClass.UserPostMC;
 import tanvir.crimelogger_playstore.R;
 
 
-public class PlaceInfoFragment extends Fragment {
+public class PlaceInfoFragment extends Fragment implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
 
     private Activity activity;
     private ArrayList<UserPostMC> userPostMCS;
@@ -46,6 +52,8 @@ public class PlaceInfoFragment extends Fragment {
     ArrayList<String> crimeDate;
 
     TextView searchedPlaceTV;
+    private TextView timeRangeTV, dateRangeTV;
+    private Button showDateRangePickerDialog, showTimeRangePickerDialog;
 
     private PieChart pieChart;
 
@@ -75,16 +83,36 @@ public class PlaceInfoFragment extends Fragment {
         activity = getActivity();
         crimeType = new ArrayList<>();
         crimeDate = new ArrayList<>();
-        userPostMCS=new ArrayList<>();
+        userPostMCS = new ArrayList<>();
         seperatedCrimeType = new ArrayList<>();
 
         pieCharts = new ArrayList<>();
         pieChart = view.findViewById(R.id.pieChart);
         pieChart.setVisibility(View.GONE);
 
+        dateRangeTV = view.findViewById(R.id.dateRangeTV);
+        timeRangeTV = view.findViewById(R.id.timeRangeTV);
+
         searchedPlaceTV = view.findViewById(R.id.placeTV);
 
         fullScreenProgressBarLayout = view.findViewById(R.id.fullScreenProgressBarLayoutInPlaceInfoFragment);
+
+        showDateRangePickerDialog = view.findViewById(R.id.dateRangePickerButton);
+        showTimeRangePickerDialog = view.findViewById(R.id.timeRangePickerBTN);
+
+        showDateRangePickerDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDateRange();
+            }
+        });
+
+        showTimeRangePickerDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTimeRange();
+            }
+        });
 
         return view;
     }
@@ -99,8 +127,6 @@ public class PlaceInfoFragment extends Fragment {
     public void retiveDataByPlaceFromDatabase() {
 
         fullScreenProgressBarLayout.setVisibility(View.VISIBLE);
-
-
 
 
         String url = "http://www.farhandroid.com/CrimeLogger/Script/retrieveSearchByPlaceData.php?placeName=" + searchKey.replaceAll(" ", "%20") + "&allData=yes";
@@ -361,5 +387,104 @@ public class PlaceInfoFragment extends Fragment {
         pieChart.setData(data);
         pieChart.invalidate();
     }
+
+    public void showTimeRange() {
+
+        Calendar now = Calendar.getInstance();
+        TimePickerDialog tpd = TimePickerDialog.newInstance(
+                (TimePickerDialog.OnTimeSetListener) PlaceInfoFragment.this,
+                now.get(Calendar.HOUR_OF_DAY),
+                now.get(Calendar.MINUTE),
+                false
+        );
+
+
+
+        tpd.show(activity.getFragmentManager(), "Timepickerdialog");
+    }
+
+    public void showDateRange() {
+        Calendar now = Calendar.getInstance();
+        DatePickerDialog dpd = DatePickerDialog.newInstance(
+                (DatePickerDialog.OnDateSetListener) PlaceInfoFragment.this,
+                now.get(Calendar.YEAR),
+                now.get(Calendar.MONTH),
+                now.get(Calendar.DAY_OF_MONTH)
+        );
+
+        dpd.setMaxDate(now);
+        dpd.show(activity.getFragmentManager(), "Datepickerdialog");
+    }
+
+    @Override
+    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int hourOfDayEnd, int minuteEnd) {
+
+        String timeFrom, timeTo;
+
+        String hourOfDayFormat;
+
+        if (hourOfDay == 0) {
+
+            hourOfDay += 12;
+
+            hourOfDayFormat = "AM";
+        } else if (hourOfDay == 12) {
+
+            hourOfDayFormat = "PM";
+
+        } else if (hourOfDay > 12) {
+
+            hourOfDay -= 12;
+
+            hourOfDayFormat = "PM";
+
+        } else {
+
+            hourOfDayFormat = "AM";
+        }
+
+
+        String hourOfDayEndFormat;
+
+        if (hourOfDayEnd == 0) {
+
+            hourOfDayEnd += 12;
+
+            hourOfDayEndFormat = "AM";
+        } else if (hourOfDayEnd == 12) {
+
+            hourOfDayEndFormat = "PM";
+
+        } else if (hourOfDayEnd > 12) {
+
+            hourOfDayEnd -= 12;
+
+            hourOfDayEndFormat = "PM";
+
+        } else {
+
+            hourOfDayEndFormat = "AM";
+        }
+
+        String hourString = hourOfDay < 10 ? "0" + hourOfDay : "" + hourOfDay;
+        String minuteString = minute < 10 ? "0" + minute : "" + minute;
+        String hourStringEnd = hourOfDayEnd < 10 ? "0" + hourOfDayEnd : "" + hourOfDayEnd;
+        String minuteStringEnd = minuteEnd < 10 ? "0" + minuteEnd : "" + minuteEnd;
+
+
+        String time = "Time:" + hourString + ":" + minuteString + ":" + hourOfDayFormat + " To " + hourStringEnd + ":" + minuteStringEnd + ":" + hourOfDayEndFormat;
+
+        timeRangeTV.setText(time);
+
+    }
+
+    @Override
+    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth, int yearEnd, int monthOfYearEnd, int dayOfMonthEnd) {
+
+        String date = "Date:" + dayOfMonth + "/" + (monthOfYear + 1) + "/" + year + " To  " + dayOfMonthEnd + "/" + (monthOfYearEnd + 1) + "/" + yearEnd;
+
+        dateRangeTV.setText(date);
+    }
+
 
 }

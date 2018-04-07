@@ -8,4 +8,7 @@
     <color name="activityBackground">#CFD8DC</color>
     <color name="black">#000000</color>
     <color name="Red">#F44336</color>
+
+    <color name="mdtp_accent_color">#37474F</color>
+    <color name="mdtp_accent_color_dark">#37474F</color>
 </resources>

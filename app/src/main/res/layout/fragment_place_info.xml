@@ -53,7 +53,7 @@
                     android:layout_height="50dp"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
-                    android:theme="@style/AppTheme2" />
+                     />
 
 
                 <TextView
@@ -92,19 +92,58 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
-                <TextView
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <Button
+                            android:id="@+id/timeRangePickerBTN"
+                            android:text="time range"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
 
-                    android:layout_marginTop="3dp"
-                    android:id="@+id/sortedMonth"
-                    android:clickable="true"
-                    android:onClick="initializeateAndMonthPicker"
-                    android:textSize="18sp"
-                    android:textColor="@color/Red"
-                    android:layout_gravity="center"
-                    android:text="Select month"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:ignore="OnClick" />
+                        <TextView
+                            android:id="@+id/timeRangeTV"
+                            android:text="time"
+                            android:textSize="15sp"
+                            android:textColor="@color/black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+
+                        android:layout_marginLeft="10dp"
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <Button
+                           android:id="@+id/dateRangePickerButton"
+                            android:text="Date range"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/dateRangeTV"
+                            android:text="date"
+                            android:textSize="15sp"
+                            android:textColor="@color/black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp" />
+
+
+                    </LinearLayout>
+
+
+
+
+                </LinearLayout>
 
 
             </LinearLayout>

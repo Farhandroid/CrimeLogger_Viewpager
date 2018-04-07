@@ -26,7 +26,7 @@
                 android:layout_height="50dp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:theme="@style/AppTheme2" />
+                 />
 
 
             <TextView
@@ -63,7 +63,7 @@
             android:layout_alignParentBottom="true"
             android:layout_below="@id/recyclerView"
             android:layout_centerHorizontal="true"
-            android:theme="@style/AppTheme2" />
+            />
     </RelativeLayout>
 
 
