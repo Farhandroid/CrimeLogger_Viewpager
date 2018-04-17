@@ -2,6 +2,7 @@ package tanvir.crimelogger_playstore.Fragment;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -34,8 +35,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import tanvir.crimelogger_playstore.HelperClass.MySingleton;
 import tanvir.crimelogger_playstore.ModelClass.PieChartDataMC;
@@ -59,9 +63,14 @@ public class PlaceInfoFragment extends Fragment implements TimePickerDialog.OnTi
 
     private ArrayList<PieChartDataMC> pieCharts;
 
+    private int timeFromInt, timeToInt;
+    private String dateFrom, dateTo;
+
 
     private String searchKey;
     RelativeLayout fullScreenProgressBarLayout;
+
+    private Context context;
 
 
     public PlaceInfoFragment() {
@@ -92,6 +101,8 @@ public class PlaceInfoFragment extends Fragment implements TimePickerDialog.OnTi
 
         dateRangeTV = view.findViewById(R.id.dateRangeTV);
         timeRangeTV = view.findViewById(R.id.timeRangeTV);
+
+        context = getActivity();
 
         searchedPlaceTV = view.findViewById(R.id.placeTV);
 
@@ -399,7 +410,6 @@ public class PlaceInfoFragment extends Fragment implements TimePickerDialog.OnTi
         );
 
 
-
         tpd.show(activity.getFragmentManager(), "Timepickerdialog");
     }
 
@@ -436,6 +446,7 @@ public class PlaceInfoFragment extends Fragment implements TimePickerDialog.OnTi
 
             hourOfDay -= 12;
 
+
             hourOfDayFormat = "PM";
 
         } else {
@@ -471,10 +482,19 @@ public class PlaceInfoFragment extends Fragment implements TimePickerDialog.OnTi
         String hourStringEnd = hourOfDayEnd < 10 ? "0" + hourOfDayEnd : "" + hourOfDayEnd;
         String minuteStringEnd = minuteEnd < 10 ? "0" + minuteEnd : "" + minuteEnd;
 
-
         String time = "Time:" + hourString + ":" + minuteString + ":" + hourOfDayFormat + " To " + hourStringEnd + ":" + minuteStringEnd + ":" + hourOfDayEndFormat;
 
         timeRangeTV.setText(time);
+
+        timeFrom = hourString + ":" + minuteString + " " + hourOfDayFormat;
+        timeTo = hourStringEnd + ":" + minuteStringEnd + " " + hourOfDayEndFormat;
+
+
+        timeFromInt = getTimeInInteger(timeFrom);
+        timeToInt = getTimeInInteger(timeTo);
+
+
+        sortByTime();
 
     }
 
@@ -484,6 +504,126 @@ public class PlaceInfoFragment extends Fragment implements TimePickerDialog.OnTi
         String date = "Date:" + dayOfMonth + "/" + (monthOfYear + 1) + "/" + year + " To  " + dayOfMonthEnd + "/" + (monthOfYearEnd + 1) + "/" + yearEnd;
 
         dateRangeTV.setText(date);
+
+        dateFrom = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
+        dateTo = dayOfMonthEnd + "/" + (monthOfYearEnd + 1) + "/" + yearEnd;
+
+        sortByDate();
+    }
+
+    public void sortByTime() {
+
+        boolean isItPMtoAM = false;
+
+        if ((timeFromInt >= 1200 && timeFromInt <= 2459) && (timeToInt >= 100 && timeToInt <= 1259))
+            isItPMtoAM = true;
+
+
+        if (timeFromInt > timeToInt) {
+            int i = timeFromInt;
+            timeFromInt = timeToInt;
+            timeToInt = i;
+
+        }
+
+
+        String time;
+        int timeInt;
+
+
+        for (int i = 0; i < userPostMCS.size(); i++) {
+            time = userPostMCS.get(i).getCrimeTime();
+
+
+            timeInt = getTimeInInteger(time);
+
+
+            if (isItPMtoAM) {
+
+
+                Log.d("Enter", "AM to PM");
+
+                if ((timeInt >= 100 && timeInt <= timeFromInt) || (timeInt >= timeToInt && timeInt <= 2459)) {
+
+                    Log.d("namePlaceAMPm  ", "name : " + userPostMCS.get(i).getCrimePlace() + "\ndate : " + userPostMCS.get(i).getCrimeDate());
+                    Toast.makeText(context, " name : " + userPostMCS.get(i).getCrimePlace() + "\ndate : " + userPostMCS.get(i).getCrimeDate() + "\ntime : " + userPostMCS.get(i).getCrimeTime(), Toast.LENGTH_SHORT).show();
+
+                }
+
+            } else if (timeInt == timeFromInt || timeInt == timeToInt) {
+                Log.d("namePlaceNormal  ", "name : " + userPostMCS.get(i).getCrimePlace() + "\ndate : " + userPostMCS.get(i).getCrimeDate());
+                Toast.makeText(context, " name : " + userPostMCS.get(i).getCrimePlace() + "\ndate : " + userPostMCS.get(i).getCrimeDate() + "\ntime : " + userPostMCS.get(i).getCrimeTime(), Toast.LENGTH_SHORT).show();
+            } else if ((timeInt > timeFromInt && timeInt < timeToInt)) {
+                Log.d("namePlaceNormal  ", "name : " + userPostMCS.get(i).getCrimePlace() + "\ndate : " + userPostMCS.get(i).getCrimeDate());
+                Toast.makeText(context, " name : " + userPostMCS.get(i).getCrimePlace() + "\ndate : " + userPostMCS.get(i).getCrimeDate() + "\ntime : " + userPostMCS.get(i).getCrimeTime(), Toast.LENGTH_SHORT).show();
+
+            }
+
+
+            ///Toast.makeText(context,"time : "+time, Toast.LENGTH_SHORT).show();
+        }
+
+
+    }
+
+    public void sortByDate() {
+        Toast.makeText(activity, "SortByDate", Toast.LENGTH_SHORT).show();
+
+        for (int i = 0; i < userPostMCS.size(); i++) {
+
+            String date = userPostMCS.get(i).getCrimeDate();
+            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+
+            try {
+                Date dateFromDate = format.parse(dateFrom);
+                Date dateToDate = format.parse(dateTo);
+                Date date2 = format.parse(date);
+
+
+                if (date2.compareTo(dateFromDate) > 0 && date2.compareTo(dateToDate) < 0)
+                    Toast.makeText(context, " name : " + userPostMCS.get(i).getCrimePlace() + "\ndate : " + userPostMCS.get(i).getCrimeDate() + "\ntime : " + userPostMCS.get(i).getCrimeTime(), Toast.LENGTH_SHORT).show();
+                else if (date2.compareTo(dateFromDate) < 0 && date2.compareTo(dateToDate) > 0)
+                    Toast.makeText(context, " name : " + userPostMCS.get(i).getCrimePlace() + "\ndate : " + userPostMCS.get(i).getCrimeDate() + "\ntime : " + userPostMCS.get(i).getCrimeTime(), Toast.LENGTH_SHORT).show();
+                else if (date2.compareTo(dateFromDate) == 0 || date2.compareTo(dateToDate) == 0)
+                    Toast.makeText(context, " name : " + userPostMCS.get(i).getCrimePlace() + "\ndate : " + userPostMCS.get(i).getCrimeDate() + "\ntime : " + userPostMCS.get(i).getCrimeTime(), Toast.LENGTH_SHORT).show();
+
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+                Toast.makeText(activity, "Exception : " + e.toString(), Toast.LENGTH_SHORT).show();
+            }
+
+
+        }
+    }
+
+    public int getTimeInInteger(String time) {
+
+
+        String timeCopy = time;
+
+        time = time.substring(0, time.length() - 2);
+        time = time.replace(":", "");
+
+        if (timeCopy.contains("PM"))
+
+        {
+            String timeSub = time.substring(0, 2);
+            timeSub = timeSub.trim();
+            int i1 = Integer.parseInt(timeSub);
+            i1 += 12;
+            time = Integer.toString(i1) + time.substring(2);
+
+        }
+
+        time = time.trim();
+        time = time.replaceAll(" ", "");
+
+        int timeInt = Integer.parseInt(time);
+
+        return timeInt;
+
+
     }
 
 
